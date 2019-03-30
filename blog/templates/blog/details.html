@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-8 blog-main">
+            <h3 class="pb-3 mb-4 font-italic ">
+                <img class="d-block w-100" src="{{object.image.url}}" >
+            </h3>
+
+            <div class="blog-post">
+                <h2 class="blog-post-title">{{object.title | title }}</h2>
+                <p>
+                    {% if object.author == user %}
+                        <a class="btn btn-outline-danger my-1" href="{% url 'Blog-Delete' object.id %}">Delete</a> 
+                        <a class="btn btn-outline-secondary my-1" href="{% url 'Blog-Update' object.id %}" style="float:right">Update</a> 
+                    {% endif %}
+                </p>
+                <p class="blog-post-meta text-muted">
+                    {{object.date_posted | date:"F dS, Y"}} 
+                    By <a href="{% url 'Blog-User' object.author.username %}" >{{object.author.profile.fullName}} </a>
+                </p>
+
+                <p>{{object.content}}</p>
+                
+                
+            </div>
+            <nav class="blog-pagination">
+                <a class="btn btn-outline-primary {% if not prevPost.id %} disabled {% endif %}" href="{{prevPost.get_absolute_url}}">Older</a>
+                <a class="btn btn-outline-secondary {% if not nextPost.id %} disabled {% endif %}" href="{{nextPost.get_absolute_url}}">Newer</a>
+            </nav>
+
+            </div>
+
+            <aside class="col-md-4 blog-sidebar">
+                <div class="p-3 mb-3 bg-light rounded">
+                    <h4 class="font-italic">About</h4>
+                    <p class="mb-0">Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+                </div>
+
+                <div class="p-3">
+                    <h4 class="font-italic">Latest Post</h4>                
+                    <ol class="list-unstyled mb-0">
+                        {% for latest in latests %}
+                            <a style="color:black" href="{{latest.get_absolute_url}}">
+                                <li class="media mb-3">
+                                    <img class="mr-3 rounded" width="20%" height="auto" src="{{latest.image.url}}" alt="Generic image">
+                                    <div class="media-body">
+                                    <h6 class="mt-0 mb-1">{{latest.title | title }}</h6>
+                                        <p>{{latest.content | truncatechars:30}}</p>
+                                    </div>
+                                </li>
+                            </a>
+                        {% endfor %}                        
+                    </ol>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+{% endblock  %}

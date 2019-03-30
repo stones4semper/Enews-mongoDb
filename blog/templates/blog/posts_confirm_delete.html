@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center mt-4"> 
+    <div class="col-md-6 col-sm-8 bg-white rounded shadow-lg mt-4 p-5">
+        <form action="." method="POST" enctype="multipart/form-data"> {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Delete</legend>
+                <p>Are You sure you want to delete the post "{{object.title}}</p>
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
+                <a class="btn btn-outline-secondary" href="{% url 'Blog-details' object.id %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock  %}

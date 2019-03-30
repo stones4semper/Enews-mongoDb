@@ -1,0 +1,37 @@
+<header class="blog-header py-3">
+    <div class="row flex-nowrap justify-content-between align-items-center">
+        <div class="col-4 pt-1">
+            <h1><a style="text-decoration: none;" class="text-muted" href="{% url 'Blog-Home' %}"><i>Eloike's Blog</i></a></h1>
+        </div>
+        <div class="col-6 d-flex justify-content-end align-items-center pull-right">
+            <a class="text-muted" href="#">
+                <svg  width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
+            </a>
+            {% if user.is_authenticated %}
+                <a class="btn text-secondary mr-3" href="{% url 'Blog-create' %}">New Post</a>
+                <a class="btn text-secondary mr-3" href="{% url 'profile' %}">Profile</a>
+                <a class="btn btn-sm btn-outline-secondary mr-2" href="{% url 'logout' %}">Logout</a>
+            {% else %}
+                <a class="btn text-secondary mr-2" href="{% url 'login' %}">Login</a>
+                <a class="btn btn-sm btn-outline-secondary mr-2" href="{% url 'register' %}">Register</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+
+<div class="nav-scroller py-1 mb-2">
+    <nav class="nav d-flex justify-content-between"> 
+        <a class="btn p-2 text-muted" href="{% url 'Blog-Cat' 'World' %}">World</a>
+        <a class="btn p-2 text-muted" href="{% url 'Blog-Cat' 'Naija' %}">Naija</a>
+        <a class="btn p-2 text-muted" href="{% url 'Blog-Cat' 'Technology' %}">Technology</a>
+        <a class="btn p-2 text-muted" href="{% url 'Blog-Cat' 'Design' %}">Design</a>
+        <a class="btn p-2 text-muted" href="{% url 'Blog-Cat' 'Culture' %}">Culture</a>
+        <a class="btn p-2 text-muted" href="{% url 'Blog-Cat' 'Business' %}">Business</a>
+        <a class="btn p-2 text-muted" href="{% url 'Blog-Cat' 'Politics' %}">Politics</a>
+        <a class="btn p-2 text-muted" href="{% url 'Blog-Cat' 'Opinion' %}">Opinion</a>
+        <a class="btn p-2 text-muted" href="{% url 'Blog-Cat' 'Science' %}">Science</a>
+        <a class="btn p-2 text-muted" href="{% url 'Blog-Cat' 'Health' %}">Health</a>
+        <a class="btn p-2 text-muted" href="{% url 'Blog-Cat' 'Style' %}">Style</a>
+        <a class="btn p-2 text-muted" href="{% url 'Blog-Cat' 'Travel' %}">Travel</a>
+    </nav>
+</div>

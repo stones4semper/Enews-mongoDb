@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+   <h1 class="mb-3 ml-3">Post by {{view.kwargs.username}} ({{page_obj.paginator.count}})</h1>
+    <div class="row justify-content-center">
+        <div class="card-columns mb-4">
+            {% for post in posts %}
+                <div class="card p-3 shadow" >
+                    <img height = "350px" class="card-img-top p-3" src="{{post.image.url}}" alt="">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a class="text-dark" href="{{post.get_absolute_url}}">
+                                {{post.title |title }}
+                            </a>
+                        </h5>
+                        <p class="card-text mb-auto">{{post.content |truncatechars:70}}</p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                By <a href="{% url 'Blog-User' post.author.username %}" >{{post.author.profile.fullName}} </a> on {{post.date_posted | date:"F dS, Y"}}
+                            </small>
+                        </p>
+                        <div class="col-12"><a href="{{post.get_absolute_url}}">Continue reading</a> </div>
+                        {% if post.author == user %}
+                            <a class="btn btn-outline-danger btn-sm my-1" href="{% url 'Blog-Delete' post.id %}">Delete</a> 
+                            <a class="btn btn-outline-secondary btn-sm" href="{% url 'Blog-Update' post.id %}" style="float:right">Update</a> 
+                        {% endif %}
+                    </div>
+                </div> 
+            {% endfor %}                
+        </div> 
+    </div> 
+    <div class="row">
+        {% if is_paginated %}
+            <nav aria-label="" >
+                <ul class="pagination justify-content-end">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item ">
+                            <a class="page-link" href="?page=1" tabindex="-1">First</a>
+                        </li>
+                        <li class="page-item ">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+                        </li>
+                    {% endif %}
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                            <li class="page-item active">
+                                <a class="page-link" href="?page={{num}}">{{num}} <span class="sr-only">(current)</span></a>
+                            </li>
+                        {% elif num > page_obj.number|add:'-3' and  num < page_obj.number|add:'3' %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{num}}">{{num}}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}" >Next</a>
+                        </li>
+                        <li class="page-item ">
+                            <a class="page-link" href="?page={{page_obj.paginator.num_pages}}" >Last</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %} 
+    </div> 
+
+{% endblock  %}

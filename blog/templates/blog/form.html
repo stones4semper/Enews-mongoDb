@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-9 col-sm-9 bg-white rounded shadow-lg mt-4 p-5">
+        <div class="justify-content-end mb-4">
+            <a href="#" data-toggle="modal" data-target="#categoryModal" class="btn btn-md btn-outline-secondary"> Create Category</a>
+        </div> 
+        <form action="." method="POST" enctype="multipart/form-data" id="PostNew__form"> {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Create a Blog Post</legend>
+                <div class="form-row">
+                    <div class="form-group col-md-8 mb-0">
+                        {{ form.title | as_crispy_field }}
+                    </div>
+
+                    <div class="form-group col-md-4 mb-0">
+                        <div id="div_id_category" class="form-group">
+                            <label for="id_category" class="col-form-label  requiredField">
+                                Category<span class="asteriskField">*</span>
+                            </label>
+                            <div class="">
+                                <select class="form-control" name="category">
+                                    {% for category in categories %}
+                                        <option value="{{category.id}}">{{category.CatName}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>                
+                </div>
+                {{ form.content | as_crispy_field }}
+                
+                <div class="ImgToHide">
+                    {{ form.image | as_crispy_field }}
+                </div>
+                
+                <div id="div_id_placeHo" class="form-group">
+                    <label for="id_placeHo" class="col-form-label  requiredField">
+                        Post Picture<span class="asteriskField">*</span>
+                    </label>
+                    <div class="">
+                        <img class="PoNeImg img-responsive" style="width: 90%;" src="https://via.placeholder.com/270x270?text=Click+Here+To+Change+Image" />
+                    </div>
+                </div>
+                <input type="hidden" name="deyHidden" value="create_hidden"> 
+            </fieldset>
+            <div class="form-group">
+                <h6 id="PostNew__show" ></h6>
+                <img src=" {% static 'images/ajax-loader.gif' %}" style="Display:none;" id="PostNew__img">
+                <button class="btn btn-outline-info" type="submit"  onclick="submit_form('PostNew__form', 'PostNew__submit', 'PostNew__img', 'PostNew__show', 'yes')" id="PostNew__submit">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create Category</h5>
+        
+        <button type="button" class="close reloadAm" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <a class="btn addAmBtm mb-2 float-right text-secondary" href="#">Add More</a>
+            <form action="." method="post" id="PostCat__form">{% csrf_token %}
+                <input type="hidden" name="deyHidden" value="category_hidden">
+                <div class="CatNameDiv"><div class="form-group"><input type="text" class="form-control" name="CatName[]" ></div></div>
+
+                <div class="form-group">
+                    <h6 id="PostCat__show"></h6>
+                    <img src=" {% static 'images/ajax-loader.gif' %}" style="Display:none;" id="PostCat__img">
+                    <button type="button" class="btn btn-outline-danger reloadAm" data-dismiss="modal">Close</button>
+                    <button class="btn btn-outline-info float-right" type="submit"  onclick="submit_form('PostCat__form', 'PostCat__submit', 'PostCat__img', 'PostCat__show', 'no')" id="PostCat__submit">Create</button>
+                </div>
+            </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    $(document).ready(function(){
+        $('.PoNeImg').click(function(){
+            $('#id_image').trigger('click')
+        })
+        $('.addAmBtm').click(function(e){
+            e.preventDefault()
+            $('.CatNameDiv').append('<div class="form-group"><input type="text" class="form-control" name="CatName[]" ></div>')
+        })
+        $('#id_image').change(function(){
+            var filePath = $(this).prop('files')[0]
+            if (filePath) {
+                var fileReader = new FileReader();
+                fileReader.onload = function (e) {
+                    $(".PoNeImg").attr('src', e.target.result);
+                }
+                fileReader.readAsDataURL(filePath);
+            }
+        })
+    })
+</script>
+{% endblock  %}

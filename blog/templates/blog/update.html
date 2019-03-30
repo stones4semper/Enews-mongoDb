@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-md-9 col-sm-9 bg-white rounded shadow-lg mt-4 p-5">
+        <form action="." method="POST" enctype="multipart/form-data" id="PostNew__form"> {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Update a Blog Post</legend>
+                <div class="form-row">
+                    <div class="form-group col-md-8 mb-0">
+                        {{ form.title | as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-4 mb-0">
+                        {{ form.category | as_crispy_field }}
+                    </div>                
+                </div>
+                {{ form.content | as_crispy_field }}
+                <div class="ImgToHide">
+                    {{ form.image | as_crispy_field }}
+                </div>
+                
+                <div id="div_id_placeHo" class="form-group">
+                    <label for="id_placeHo" class="col-form-label  requiredField">
+                        Post Picture<span class="asteriskField">*</span>
+                    </label>
+                    <div class="">
+                        <img class="PoNeImg img-responsive" style="width: 90%;" src="https://via.placeholder.com/270x270?text=Click+Here+To+Change+Image" />
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group">
+                <h6 id="PostNew__show" ></h6>
+                <img src=" {% static 'images/ajax-loader.gif' %}" style="Display:none;" id="PostNew__img">
+                <button class="btn btn-outline-info float-right" type="submit"  onclick="submit_form('PostNew__form', 'PostNew__submit', 'PostNew__img', 'PostNew__show', 'yes')" id="PostNew__submit">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        
+        $('.PoNeImg').click(function(){
+            $('#id_image').trigger('click')
+        })
+        $('.PoNeImg').attr('src', $('#div_id_image > div > a').attr('href'))
+        $('#id_image').change(function(){
+            var filePath = $(this).prop('files')[0]
+            if (filePath) {
+                var fileReader = new FileReader();
+                fileReader.onload = function (e) {
+                    $(".PoNeImg").attr('src', e.target.result);
+                }
+                fileReader.readAsDataURL(filePath);
+            }
+        })
+    })
+</script>
+{% endblock  %}

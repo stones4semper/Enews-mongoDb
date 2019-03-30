@@ -1,0 +1,11 @@
+a{
+    text-decoration: none !important;
+}
+.ImgToHide{
+    display:none;
+}
+.LatestPix{
+    display:none;
+    width: 20% !important;
+    height: auto
+}
